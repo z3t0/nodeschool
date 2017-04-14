@@ -1,21 +1,14 @@
 const http = require('http')
+const bl = require('bl')
 
 const url = process.argv[2]
 
-var all = ""
-
 http.get(url, (res) => {
 
-    res.setEncoding('utf8')
-
-    res.on('data', (data) => {
-        all += data
-    })
-
-    res.on('end', () => {
-        console.log(all.length)
-        console.log(all)
-    })
+    res.pipe(bl( (err, data) => {
+        console.log(data.length)
+        console.log(data.toString())
+    } ))
 
 })
 
